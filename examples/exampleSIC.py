@@ -12,8 +12,8 @@
     rHumidity     : Relative humidity of the air in the ionization chamber in %.
     voltage       : Bias applied voltage in V. For spherical and cylindrical IC
                     the CCE may depend on the sign of this value.
-    r1            : Internal radii of the cylindrical ionization chamber in m.
-    r2            : External radii of the cylindrical ionization chamber in m.
+    r1            : Internal radius of the cylindrical ionization chamber in m.
+    r2            : External radius of the cylindrical ionization chamber in m.
     Ndw           : Calibration coefficient of the ionization chamber in Gy C^{-1}.
                     The calibration coefficient must have applied all the factor
                     related to the charge released in the medium but not the
@@ -27,8 +27,6 @@
                     By default it is activated.
 
     +- Optional arguments:
-    fig           : If true, a figure will be display with the electric field and the
-                    charge densities
     eFieldP       : Flag to activate/deactivate the electric field perturbation.
                     By default it is activated.
     tStruct       : Array with the time in s for a custom pulse structure.
@@ -52,12 +50,11 @@ voltage       = -200     # V
 r1            = 0.500E-3 # m
 r2            = 1.000E-3 # m
 n             = 1000
-fig           = 0        # No figure display
 eFieldP       = 1        # Electric field perturbation activated
 Ndw           = 7.7E9    # Gy/C
 
 inputParameters = [dpp, pulseDuration, alpha, voltage, temperature,
-                    pressure, rHumidity, r1, r2, n, Ndw, fig, eFieldP]
+                    pressure, rHumidity, r1, r2, n, Ndw, eFieldP]
 
 t0 = time.time()
 CCE, FEF0, FEF1, Q_coll, I = SICpulsedSimulation(*inputParameters)
@@ -97,3 +94,5 @@ ax.set_yscale("log")
 
 fig.tight_layout()
 plt.show()
+
+fig.savefig("Figure_exampleSIC.pdf")

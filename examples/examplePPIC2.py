@@ -13,7 +13,7 @@
     rHumidity     : Relative humidity of the air in the ionization chamber in %.
     voltage       : Bias applied voltage (always positive) in V.
     d             : Distance between electrodes of the ionization chamber in m.
-    radii         : Radii of the sensitive volume of the chamber in m.
+    radius        : Radius of the sensitive volume of the chamber in m.
     Ndw           : Calibration coefficient of the ionization chamber in Gy C^{-1}.
                     The calibration coefficient must have applied all the factor
                     related to the charge released in the medium but not the
@@ -22,8 +22,6 @@
     n             : Number of discretization steps in position. A reasonable number
 
     +- Optional arguments:
-    fig           : If true, a figure will be display with the electric field and the
-                    charge densities
     eFieldP       : Flag to activate/deactivate the electric field perturbation.
                     By default it is activated.
     tStruct       : Array with the time in s for a custom pulse structure.
@@ -49,19 +47,18 @@ d              = 2E-3    # m
 radii          = 8.00E-3 # m
 Ndw            = 8.18E7  # Gy C^{-1}
 kQ             = 0.8954
-n              = 3000
-fig            = 0
+n              = 1000
 eFieldP        = 1
 
 dStruct = np.ones(1000)
 tStruct = np.linspace(0, 2.5E-6, 1000)
 
 inputParameters = [dpp, pulseDuration, alpha, voltage, temperature, pressure,
-                   rHumidity, d, radii, n, Ndw * kQ, fig, eFieldP, tStruct,
-                   dStruct]
+                   rHumidity, d, radii, n, Ndw * kQ]
 
 t0 = time.time()
-CCE, FEF0, FEF1, Q_coll, I = PPICpulsedSimulation(*inputParameters)
+CCE, FEF0, FEF1, Q_coll, I = PPICpulsedSimulation(*inputParameters, timeStruct = tStruct,
+                                                   doseRateStruct = dStruct)
 
 # This function returns:
 #
@@ -98,3 +95,5 @@ ax.set_yscale("log")
 
 fig.tight_layout()
 plt.show()
+
+fig.savefig("Figure_examplePPIC.pdf")

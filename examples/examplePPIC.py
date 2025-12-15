@@ -12,7 +12,7 @@
     rHumidity     : Relative humidity of the air in the ionization chamber in %.
     voltage       : Bias applied voltage (always positive) in V.
     d             : Distance between electrodes of the ionization chamber in m.
-    radii         : Radii of the sensitive volume of the chamber in m.
+    radius        : Radius of the sensitive volume of the chamber in m.
     Ndw           : Calibration coefficient of the ionization chamber in Gy C^{-1}.
                     The calibration coefficient must have applied all the factor
                     related to the charge released in the medium but not the
@@ -22,8 +22,6 @@
                     is around 1000. You may increase to have lower numerical error.
 
     +- Optional arguments:
-    fig           : If true, a figure will be display with the electric field and the
-                    charge densities
     eFieldP       : Flag to activate/deactivate the electric field perturbation.
                     By default it is activated.
     tStruct       : Array with the time in s for a custom pulse structure.
@@ -44,16 +42,14 @@ temperature    = 18.77   # ºC
 pressure       = 1013.0  # hPa
 rHumidity      = 50      # %
 voltage        = 100     # V
-d              = 2E-3    # m
+d              = 2.00E-3 # m
 radii          = 8.00E-3 # m
 Ndw            = 8.18E7  # Gy C^{-1}
 kQ             = 0.8954
-n              = 3000
-fig            = 0
-eFieldP        = 1
+n              = 1000
 
 inputParameters = [dpp, pulseDuration, alpha, voltage, temperature, pressure,
-                   rHumidity, d, radii, n, Ndw * kQ, fig, eFieldP]
+                   rHumidity, d, radii, n, Ndw * kQ]
 
 t0 = time.time()
 CCE, FEF0, FEF1, Q_coll, I = PPICpulsedSimulation(*inputParameters)
@@ -65,7 +61,7 @@ CCE, FEF0, FEF1, Q_coll, I = PPICpulsedSimulation(*inputParameters)
 #          medium.
 # FEF1   : Free electron fraction in relation to the collected charge.
 # Q_coll : Collected charge per pulse referenced to 20 ºC and 1013.25 hPa.
-# I      : Array with the times and the  induced current by each charge carrier
+# I      : Array with the times and the induced current by each charge carrier
 #          in A.
 
 print(f"CCE    = {CCE:.4f}")
@@ -93,3 +89,5 @@ ax.set_yscale("log")
 
 fig.tight_layout()
 plt.show()
+
+fig.savefig("Figure_examplePPIC.pdf")

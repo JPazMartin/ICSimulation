@@ -12,9 +12,9 @@
     rHumidity     : Relative humidity of the air in the ionization chamber in %.
     voltage       : Bias applied voltage in V. For spherical and cylindrical IC
                     the CCE may depend on the sign of this value.
-    r1            : Internal radii of the cylindrical ionization chamber in m.
-    r2            : External radii of the cylindrical ionization chamber in m.
-    h             : Heigh of the cylindrical ionization chamber in m.
+    r1            : Internal radius of the cylindrical ionization chamber in m.
+    r2            : External radius of the cylindrical ionization chamber in m.
+    h             : Height of the cylindrical ionization chamber in m.
     Ndw           : Calibration coefficient of the ionization chamber in Gy C^{-1}.
                     The calibration coefficient must have applied all the factor
                     related to the charge released in the medium but not the
@@ -54,13 +54,12 @@ r1            = 0.500E-3 # m
 r2            = 2.333E-3 # m
 h             = 0.500E-3 # m
 n             = 2000
-fig           = 0        # No figure display
 eFieldP       = 1        # Electric field perturbation activated
 Ndw           = 3.46E9   # Gy/C
 
 
 inputParameters = [dpp, pulseDuration, alpha, voltage, temperature,
-                    pressure, rHumidity, r1, r2, h, n, Ndw, fig, eFieldP]
+                    pressure, rHumidity, r1, r2, h, n, Ndw, eFieldP]
 
 t0 = time.time()
 CCE, FEF0, FEF1, Q_coll, I = CICpulsedSimulation(*inputParameters)
@@ -90,7 +89,7 @@ ax.plot(I[:, 0] * 1E6, I[:, 2] * 1E3, "-b", label = "Positive ions")
 ax.plot(I[:, 0] * 1E6, I[:, 3] * 1E3, "-m", label = "Negative ions")
 
 ax.set_xlabel(r"Time (us)")
-ax.set_ylabel(r"Intensity (mA)")
+ax.set_ylabel(r"Instantaneous current (mA)")
 
 ax.set_ylim([1E-4, 1E0])
 ax.set_xlim([1E-6, 1E3])
@@ -100,3 +99,5 @@ ax.set_yscale("log")
 
 fig.tight_layout()
 plt.show()
+
+fig.savefig("Figure_exampleCIC2.pdf")

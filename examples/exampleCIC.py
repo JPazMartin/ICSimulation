@@ -12,9 +12,9 @@
     rHumidity     : Relative humidity of the air in the ionization chamber in %.
     voltage       : Bias applied voltage in V. For spherical and cylindrical IC
                     the CCE may depend on the sign of this value.
-    r1            : Internal radii of the cylindrical ionization chamber in m.
-    r2            : External radii of the cylindrical ionization chamber in m.
-    h             : Heigh of the cylindrical ionization chamber in m.
+    r1            : Internal radius of the cylindrical ionization chamber in m.
+    r2            : External radius of the cylindrical ionization chamber in m.
+    h             : Height of the cylindrical ionization chamber in m.
     Ndw           : Calibration coefficient of the ionization chamber in Gy C^{-1}.
                     The calibration coefficient must have applied all the factor
                     related to the charge released in the medium but not the
@@ -52,14 +52,13 @@ r1            = 0.500E-3 # m
 r2            = 2.333E-3 # m
 h             = 0.500E-3 # m
 n             = 1000
-fig           = 0        # No figure display
 eFieldP       = 1        # Electric field perturbation activated
 Ndw           = 3.46E9   # Gy/C
 
 for voltage in [200, -200]:
 
     inputParameters = [dpp, pulseDuration, alpha, voltage, temperature,
-                       pressure, rHumidity, r1, r2, h, n, Ndw, fig, eFieldP]
+                       pressure, rHumidity, r1, r2, h, n, Ndw, eFieldP]
 
     t0 = time.time()
     CCE, FEF0, FEF1, Q_coll, I = CICpulsedSimulation(*inputParameters)
