@@ -99,9 +99,10 @@ cdef int getIndex(const double[::1] x_theo, const double x_ex, const unsigned in
 cpdef runSimulation(double[::1] eField, const double[::1] eField0, const double[::1] area,
                     const double[:, :] eParameters, const double stepE, const double alpha, 
                     const int eFieldP, const double dx, const int eSign, const double voltage,
-                    const double k_pos, const double k_neg, const int eMult, const double cRelease,
-                    const double n0, const double pulseDuration, const int timeStructFlag, 
-                    const double[::1] timeStruct, const double[::1] n0Struct, double[:, :] current):
+                    const double alphaElectron, const double k_pos, const double k_neg, 
+                    const int eMult, const double cRelease, const double n0, const double pulseDuration,
+                    const int timeStructFlag, const double[::1] timeStruct, const double[::1] n0Struct,
+                    double[:, :] current):
 
     cdef:
 
@@ -201,9 +202,13 @@ cpdef runSimulation(double[::1] eField, const double[::1] eField0, const double[
             nENew[i]   += irradiation
             nPosNew[i] += irradiation
 
-            ### -- 2nd step: Ion-ion Recombination --
+            ### -- 2nd step: Ion-ion  and electron - ion recombination --
             recomb      = alpha * nNeg[i] * nPos[i] * tStep
             nNegNew[i] -= recomb
+            nPosNew[i] -= recomb
+
+            recomb      = alphaElectron * nE[i] * nPos[i] * tStep
+            nENew[i]   -= recomb
             nPosNew[i] -= recomb
 
             ## -- 3rd step: Attachment --

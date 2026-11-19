@@ -85,9 +85,10 @@ def default_mult(E, humidity, pressure, temperature):
     return np.interp(E, eTable[:, 0] / k_TP, eTable[:, 2] / k_TP)
 
 def CICpulsedSimulation(dpp, pulseDuration, alpha, voltage, temperature, pressure,
-                        humidity, r1, r2, h, n, Ndw, eFieldP = 1, eMult = 1, mu_pos = mob_pos,
-                        mu_neg = mob_neg, ve = default_vele, taue = default_taue,
-                        multe = default_mult, timeStruct = [], doseRateStruct = []):
+                        humidity, r1, r2, h, n, Ndw, alphaElectron = 0.0, eFieldP = 1,
+                        eMult = 1, mu_pos = mob_pos, mu_neg = mob_neg, ve = default_vele,
+                        taue = default_taue, multe = default_mult, timeStruct = [],
+                        doseRateStruct = []):
 
     """
     This function simulates the charge transport in a 1D cylindrical ionization
@@ -97,7 +98,7 @@ def CICpulsedSimulation(dpp, pulseDuration, alpha, voltage, temperature, pressur
         
         :dpp:           Dose per pulse in Gy.
         :pulseDuration: Pulse duration in s.
-        :alpha:         Volume recombination constant in m^{3} s^{-1}.
+        :alpha:         Ion-ion volume recombination constant in m^{3} s^{-1}.
         :voltage:       Voltage in V.
         :temperature:   Temperature in degree Celsius.
         :pressure:      Pressure in hPa.
@@ -109,6 +110,7 @@ def CICpulsedSimulation(dpp, pulseDuration, alpha, voltage, temperature, pressur
         :Ndw:           Calibration coefficient in Gy C^{-1}. The calibration
                         coefficient must include all the correction factors
                         that affect the released charge excluding k_TP.
+        :alphaElectron: Optional. Electron-ion volume recombination constant in m^{3} s^{-1}.
         :eFieldP:       Optional. Set to 0 to disable electric field
                         perturbation.
         :eMult:         Optional. Set to 0 to disable electron multiplication
@@ -168,7 +170,7 @@ def CICpulsedSimulation(dpp, pulseDuration, alpha, voltage, temperature, pressur
     eSign = np.sign(voltage)
  
     pars = [dpp, pulseDuration, alpha, voltage, temperature, pressure, humidity,
-            area, volume, length, eField0, dx, x, eSign, n, Ndw, eFieldP,
+            area, volume, length, eField0, dx, x, eSign, n, Ndw, alphaElectron, eFieldP,
             eMult, mu_pos, mu_neg, ve, taue, multe, timeStruct, doseRateStruct]
     
     chargePos, chargeNeg, chargeE, I = pulsedSimulation(*pars)
@@ -186,9 +188,10 @@ def CICpulsedSimulation(dpp, pulseDuration, alpha, voltage, temperature, pressur
     return CCE, FEF0, FEF1, Qcoll, I
 
 def SICpulsedSimulation(dpp, pulseDuration, alpha, voltage, temperature, pressure,
-                        humidity, r1, r2, n, Ndw, eFieldP = 1, eMult = 1, mu_pos = mob_pos,
-                        mu_neg = mob_neg, ve = default_vele, taue = default_taue,
-                        multe = default_mult, timeStruct = [], doseRateStruct = []):
+                        humidity, r1, r2, n, Ndw, alphaElectron = 0.0, eFieldP = 1,
+                        eMult = 1, mu_pos = mob_pos, mu_neg = mob_neg, ve = default_vele,
+                        taue = default_taue, multe = default_mult, timeStruct = [],
+                        doseRateStruct = []):
     """
     This function simulates the charge transport in a 1D spherical ionization
     chamber.
@@ -197,7 +200,7 @@ def SICpulsedSimulation(dpp, pulseDuration, alpha, voltage, temperature, pressur
         
         :dpp:           Dose per pulse in Gy.
         :pulseDuration: Pulse duration in s.
-        :alpha:         Volume recombination constant in m^{3} s^{-1}.
+        :alpha:         Ion-ion volume recombination constant in m^{3} s^{-1}.
         :voltage:       Voltage in V.
         :temperature:   Temperature in degree Celsius.
         :pressure:      Pressure in hPa.
@@ -208,6 +211,7 @@ def SICpulsedSimulation(dpp, pulseDuration, alpha, voltage, temperature, pressur
         :Ndw:           Calibration coefficient in Gy C^{-1}. The calibration
                         coefficient must include all the correction factors
                         that affect the released charge excluding k_TP.
+        :alphaElectron: Optional. Electron-ion volume recombination constant in m^{3} s^{-1}.
         :eFieldP:       Optional. Set to 0 to disable electric field
                         perturbation.
         :eMult:         Optional. Set to 0 to disable electron multiplication
@@ -267,7 +271,7 @@ def SICpulsedSimulation(dpp, pulseDuration, alpha, voltage, temperature, pressur
     eSign = np.sign(voltage)
  
     pars = [dpp, pulseDuration, alpha, voltage, temperature, pressure, humidity,
-            area, volume, length, eField0, dx, x, eSign, n, Ndw, eFieldP,
+            area, volume, length, eField0, dx, x, eSign, n, Ndw, alphaElectron, eFieldP,
             eMult, mu_pos, mu_neg, ve, taue, multe, timeStruct, doseRateStruct]
     
     chargePos, chargeNeg, chargeE, I = pulsedSimulation(*pars)
@@ -285,9 +289,10 @@ def SICpulsedSimulation(dpp, pulseDuration, alpha, voltage, temperature, pressur
     return CCE, FEF0, FEF1, Qcoll, I
 
 def PPICpulsedSimulation(dpp, pulseDuration, alpha, voltage, temperature, pressure,
-                         humidity, d, radius, n, Ndw, eFieldP = 1, eMult = 1, mu_pos = mob_pos,
-                         mu_neg = mob_neg, ve = default_vele, taue = default_taue,
-                         multe = default_mult, timeStruct = [], doseRateStruct = []):
+                         humidity, d, radius, n, Ndw, alphaElectron = 0.0, eFieldP = 1,
+                         eMult = 1, mu_pos = mob_pos, mu_neg = mob_neg, ve = default_vele,
+                         taue = default_taue, multe = default_mult, timeStruct = [],
+                         doseRateStruct = []):
     
     """
     This function simulates the charge transport in a 1D parallel plate ionization
@@ -297,7 +302,7 @@ def PPICpulsedSimulation(dpp, pulseDuration, alpha, voltage, temperature, pressu
         
         :dpp:           Dose per pulse in Gy.
         :pulseDuration: Pulse duration in s.
-        :alpha:         Volume recombination constant in m^{3} s^{-1}.
+        :alpha:         Ion-ion volume recombination constant in m^{3} s^{-1}.
         :voltage:       Voltage in V.
         :temperature:   Temperature in degree Celsius.
         :pressure:      Pressure in hPa.
@@ -309,6 +314,7 @@ def PPICpulsedSimulation(dpp, pulseDuration, alpha, voltage, temperature, pressu
         :Ndw:           Calibration coefficient in Gy C^{-1}. The calibration
                         coefficient must include all the correction factors
                         that affect the released charge excluding k_TP.
+        :alphaElectron: Optional. Electron-ion volume recombination constant in m^{3} s^{-1}.
         :eFieldP:       Optional. Set to 0 to disable electric field
                         perturbation.
         :eMult:         Optional. Set to 0 to disable electron multiplication
@@ -368,7 +374,7 @@ def PPICpulsedSimulation(dpp, pulseDuration, alpha, voltage, temperature, pressu
     eSign = 1
  
     pars = [dpp, pulseDuration, alpha, voltage, temperature, pressure, humidity,
-            area, volume, length, eField0, dx, x, eSign, n, Ndw, eFieldP, 
+            area, volume, length, eField0, dx, x, eSign, n, Ndw, alphaElectron, eFieldP, 
             eMult, mu_pos, mu_neg, ve, taue, multe, timeStruct, doseRateStruct]
     
     chargePos, chargeNeg, chargeE, I = pulsedSimulation(*pars)
@@ -387,7 +393,7 @@ def PPICpulsedSimulation(dpp, pulseDuration, alpha, voltage, temperature, pressu
 
 def pulsedSimulation(dpp, pulseDuration, alpha, voltage, temperature, pressure,
                      humidity, area, volume, length, eField0, dx, x, eSign, n,
-                     Ndw, eFieldP = 1, eMult = 1, mu_pos = mob_pos,
+                     Ndw, alphaElectron = 0.0, eFieldP = 1, eMult = 1, mu_pos = mob_pos,
                      mu_neg = mob_neg, ve = default_vele, taue = default_taue,
                      multe = default_mult, timeStruct = [], doseRateStruct = []):
     
@@ -400,7 +406,7 @@ def pulsedSimulation(dpp, pulseDuration, alpha, voltage, temperature, pressure,
         
         :dpp:           Dose per pulse in Gy.
         :pulseDuration: Pulse duration in s.
-        :alpha:         Volume recombination constant in m^{3} s^{-1}.
+        :alpha:         Ion-ion volume recombination constant in m^{3} s^{-1}.
         :voltage:       Voltage in V.
         :temperature:   Temperature in degree Celsius.
         :pressure:      Pressure in hPa.
@@ -418,6 +424,7 @@ def pulsedSimulation(dpp, pulseDuration, alpha, voltage, temperature, pressure,
         :Ndw:           Calibration coefficient in Gy C^{-1}. The calibration
                         coefficient must include all the correction factors
                         that affect the released charge excluding k_TP.
+        :alphaElectron: Optional. Electron-ion volume recombination constant in m^{3} s^{-1}.
         :eFieldP:       Optional. Set to 0 to disable electric field
                         perturbation.
         :eMult:         Optional. Set to 0 to disable electron multiplication
