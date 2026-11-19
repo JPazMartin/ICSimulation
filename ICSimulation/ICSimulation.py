@@ -510,7 +510,7 @@ def pulsedSimulation(dpp, pulseDuration, alpha, voltage, temperature, pressure,
     
     # Loop until no charge (nSum > 1) is left in the simulation.
     chargePos, chargeNeg, chargeE = k.runSimulation(eField, eField0, area, eParameters,
-                                     stepE, alpha, eFieldP, dx, eSign, voltage, k_pos,
+                                     stepE, alpha, eFieldP, dx, eSign, voltage, alphaElectron, k_pos,
                                      k_neg, eMult, 2 * n0 * volume, n0, pulseDuration,
                                      timeStructFlag, timeStruct, n0Struct, current)
     
